@@ -11,6 +11,10 @@ const assetsDir = resolve(__dirname, assetsDirName);
 const assetsDirDest = resolve(projectDistDir, assetsDirName);
 const componentsDir = resolve(__dirname, 'components');
 
+const cssExtensionWithDot = '.css';
+const htmlExtensionWithoutDot = 'html';
+const separator = '.';
+
 copyDir(assetsDir, assetsDirDest);
 buildFromTemplate(templatePath, componentsDir, indexPath);
 mergeStyles(stylesDir, stylePath);
@@ -52,14 +56,14 @@ async function buildFromTemplate(template, components, dest) {
   let componentsMap = new Map();
 
   for (const file of files) { 
-    fileSplitArray = file.split('.');
+    fileSplitArray = file.split(separator);
     if (fileSplitArray.length > 1) {
 
       let stats = await fs.lstat(resolve(components, file));
     
-      if (stats.isFile() && fileSplitArray[fileSplitArray.length-1] == 'html') {
+      if (stats.isFile() && fileSplitArray[fileSplitArray.length-1] == htmlExtensionWithoutDot) {
         let content = (await fs.readFile(resolve(components, file))).toString();
-        let fileName = file.split('.')[0];
+        let fileName = file.split(separator)[0];
         componentsMap.set(fileName, content);
       }
 
@@ -88,7 +92,7 @@ async function mergeStyles(stylesDir, stylePath) {
   let stylesArray = [];  
   
   for (const file of files) { 
-    if (file.isFile && extname(file.name) == '.css') {
+    if (file.isFile && extname(file.name) == cssExtensionWithDot) {
       let styleString = (await fs.readFile(resolve(stylesDir, file.name))).toString();
       stylesArray.push(styleString);
     }
