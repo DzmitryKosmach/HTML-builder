@@ -99,7 +99,6 @@ async function mergeStyles(stylesDir, stylePath) {
         await fs.writeFile(stylePath, stylesArray[i], (err) => {
           if (err) console.log(err);    
         }); 
-        //fs.writeFileSync(stylePath, stylesArray[i]);            
       } else {
         await fs.appendFile(stylePath, stylesArray[i], (err) => { 
           console.log(err);
